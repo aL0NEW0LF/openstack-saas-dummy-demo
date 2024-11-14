@@ -1,0 +1,10 @@
+runcmd:
+  - sudo bash -c 'echo "127.0.0.1 saas" >> /etc/hosts'
+  - sudo bash -c 'echo "nameserver 8.8.8.8" > /etc/resolv.conf'
+  - sudo bash -c 'echo "nameserver 8.8.4.4" >> /etc/resolv.conf'
+  - sudo apt update
+  - sudo apt install python3-pip python3-venv git
+  - git clone https://github.com/aL0NEW0LF/openstack-saas-dummy-demo.git /home/ubuntu/saas  - chown ubuntu:ubuntu /home/ubuntu/saas
+  - python3 -m venv /home/ubuntu/saas/venv
+  - /home/ubuntu/saas/venv/bin/pip3 install flask gunicorn
+  - sudo /home/ubuntu/saas/venv/bin/python3.12 saas/server.py
