@@ -1,10 +1,46 @@
+#cloud-config
+package_update: true
+package_upgrade: true
+
+# DNS settings
+manage_etc_hosts: true
+dns:
+  nameservers:
+    - 8.8.8.8
+    - 8.8.4.4
+
+# Install required packages
+packages:
+  - python3-pip
+  - python3-venv
+  - git
+
+# Clone repo and setup application
 runcmd:
-  - sudo bash -c 'echo "127.0.0.1 saas" >> /etc/hosts'
-  - sudo bash -c 'echo "nameserver 8.8.8.8" > /etc/resolv.conf'
-  - sudo bash -c 'echo "nameserver 8.8.4.4" >> /etc/resolv.conf'
-  - sudo apt update
-  - sudo apt install python3-pip python3-venv git
-  - git clone https://github.com/aL0NEW0LF/openstack-saas-dummy-demo.git /home/ubuntu/saas  - chown ubuntu:ubuntu /home/ubuntu/saas
-  - python3 -m venv /home/ubuntu/saas/venv
-  - /home/ubuntu/saas/venv/bin/pip3 install flask gunicorn
-  - sudo /home/ubuntu/saas/venv/bin/python3.12 saas/server.py
+  - pip3 install flask gunicorn
+  - git clone https://github.com/aL0NEW0LF/openstack-saas-dummy-demo.git /home/ubuntu/calculator-saas
+
+  # Setup systemd service for the calculator
+  - |
+    cat << 'EOL' > /etc/systemd/system/calculator.service
+    [Unit]
+    Description=Calculator SaaS
+    After=network.target
+
+    [Service]
+    User=ubuntu
+    WorkingDirectory=/home/ubuntu/calculator-saas
+    ExecStart=/usr/local/bin/gunicorn -w 4 -b 0.0.0.0:5000 calculator:app
+    Restart=always
+
+    [Install]
+    WantedBy=multi-user.target
+    EOL
+
+  # Start and enable the service
+  - systemctl daemon-reload
+  - systemctl start calculator
+  - systemctl enable calculator
+
+# Optional: Add output of the service status to the console log
+final_message: "The calculator service is now up and running!"
