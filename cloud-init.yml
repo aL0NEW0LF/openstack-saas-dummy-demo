@@ -1,25 +1,20 @@
-# DNS settings
 manage_resolv_conf: true
 resolv_conf:
   nameservers: [8.8.8.8, 8.8.4.4]
 
-#cloud-config
 package_reboot_if_required: true
 package_update: true
 package_upgrade: true
 
-# Install required packages
 packages:
   - python3-pip
   - python3-venv
   - git
 
-# Clone repo and setup application
 runcmd:
   - pip3 install flask gunicorn
   - git clone https://github.com/aL0NEW0LF/openstack-saas-dummy-demo.git /home/ubuntu/calculator-saas
 
-  # Setup systemd service for the calculator
   - |
     cat << 'EOL' > /etc/systemd/system/calculator.service
     [Unit]
@@ -36,10 +31,8 @@ runcmd:
     WantedBy=multi-user.target
     EOL
 
-  # Start and enable the service
   - systemctl daemon-reload
   - systemctl start calculator
   - systemctl enable calculator
 
-# Optional: Add output of the service status to the console log
 final_message: "The calculator service is now up and running!"
