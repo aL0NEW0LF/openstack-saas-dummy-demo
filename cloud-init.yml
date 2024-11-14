@@ -1,13 +1,12 @@
+# DNS settings
+manage_resolv_conf: true
+resolv_conf:
+  nameservers: [8.8.8.8, 8.8.4.4]
+
 #cloud-config
+package_reboot_if_required: true
 package_update: true
 package_upgrade: true
-
-# DNS settings
-manage_etc_hosts: true
-dns:
-  nameservers:
-    - 8.8.8.8
-    - 8.8.4.4
 
 # Install required packages
 packages:
