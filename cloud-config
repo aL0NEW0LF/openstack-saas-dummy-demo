@@ -17,9 +17,9 @@ write_files:
     permissions: '0644'
 
 runcmd:
-  - [sh, -c, "sudo echo \'127.0.0.1 calculator-saas\' >> /etc/hosts"]
-  - [sh, -c, "sudo echo \'nameserver 8.8.8.8\' > /etc/resolv.conf"]
-  - [sh, -c, "sudo echo \'nameserver 8.8.4.4\' >> /etc/resolv.conf"]
+  - [sh, -c, "sudo echo '127.0.0.1 calculator-saas' >> /etc/hosts"]
+  - [sh, -c, "sudo echo 'nameserver 8.8.8.8' > /etc/resolv.conf"]
+  - [sh, -c, "sudo echo 'nameserver 8.8.4.4' >> /etc/resolv.conf"]
   - [sh, -c, "sudo apt update"]
   - [sh, -c, "sudo apt install python3-pip python3-venv git"]
   - [sh, -c, "pip3 install flask gunicorn"]
