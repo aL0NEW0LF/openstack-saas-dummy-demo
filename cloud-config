@@ -1,39 +1,40 @@
 #cloud-config
-manage_resolv_conf: true
-resolv_conf:
-  nameservers: [8.8.8.8, 8.8.4.4]
-
 package_reboot_if_required: true
 package_update: true
 package_upgrade: true
 
+manage_resolv_conf: true
+resolv_conf:
+  nameservers: [8.8.8.8, 8.8.4.4]
+
 packages:
+  - python3
   - python3-pip
   - python3-venv
   - git
 
+write_files:
+  - path: /etc/systemd/system/calculator.service
+    content: |
+      [Unit]
+      Description=Calculator SaaS
+      After=network.target
+  
+      [Service]
+      User=ubuntu
+      WorkingDirectory=/home/ubuntu/calculator-saas
+      ExecStart=/usr/local/bin/gunicorn -w 4 -b 0.0.0.0:5000 calculator:app
+      Restart=always
+  
+      [Install]
+      WantedBy=multi-user.target
+    permissions: '0644'
+
 runcmd:
-  - pip3 install flask gunicorn
-  - git clone https://github.com/aL0NEW0LF/openstack-saas-dummy-demo.git /home/ubuntu/calculator-saas
-
-  - |
-    cat << 'EOL' > /etc/systemd/system/calculator.service
-    [Unit]
-    Description=Calculator SaaS
-    After=network.target
-
-    [Service]
-    User=ubuntu
-    WorkingDirectory=/home/ubuntu/calculator-saas
-    ExecStart=/usr/local/bin/gunicorn -w 4 -b 0.0.0.0:5000 calculator:app
-    Restart=always
-
-    [Install]
-    WantedBy=multi-user.target
-    EOL
-
-  - systemctl daemon-reload
-  - systemctl start calculator
-  - systemctl enable calculator
+  - [ sh, "pip3 install flask gunicorn" ]
+  - [ sh, "git clone https://github.com/aL0NEW0LF/openstack-saas-dummy-demo.git /home/ubuntu/calculator-saas" ]
+  - [ sh, "systemctl daemon-reload" ]
+  - [ sh, "systemctl start calculator" ]
+  - [ sh, "systemctl enable calculator" ]
 
 final_message: "The calculator service is now up and running!"
