@@ -5,13 +5,12 @@ package_upgrade: true
 
 manage_resolv_conf: true
 resolv_conf:
-  nameservers: [8.8.8.8, 8.8.4.4]
+  nameservers: 
+    - 8.8.8.8
+    - 8.8.4.4
 
 packages:
-  - python3
-  - python3-pip
-  - python3-venv
-  - git
+- apt: [python3, python3-pip, python3-venv, git]
 
 write_files:
   - path: /etc/systemd/system/calculator.service
@@ -31,10 +30,10 @@ write_files:
     permissions: '0644'
 
 runcmd:
-  - [ sh, "pip3 install flask gunicorn" ]
-  - [ sh, "git clone https://github.com/aL0NEW0LF/openstack-saas-dummy-demo.git /home/ubuntu/calculator-saas" ]
-  - [ sh, "systemctl daemon-reload" ]
-  - [ sh, "systemctl start calculator" ]
-  - [ sh, "systemctl enable calculator" ]
+  - [sh, -c, "pip3 install flask gunicorn"]
+  - [sh, -c, "git clone https://github.com/aL0NEW0LF/openstack-saas-dummy-demo.git /home/ubuntu/calculator-saas"]
+  - [sh, -c, "systemctl daemon-reload"]
+  - [sh, -c, "systemctl start calculator"]
+  - [sh, -c, "systemctl enable calculator"]
 
 final_message: "The calculator service is now up and running!"
