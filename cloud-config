@@ -10,7 +10,10 @@ resolv_conf:
     - 8.8.4.4
 
 packages:
-- apt: [python3, python3-pip, python3-venv, git]
+  - python3
+  - python3-pip
+  - python3-venv
+  - git
 
 write_files:
   - path: /etc/systemd/system/calculator.service
