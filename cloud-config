@@ -23,16 +23,17 @@ write_files:
     permissions: '0644'
 
 runcmd:
-  - [sh, -c, "sudo bash -c 'echo \"127.0.0.1 calculator\" >> /etc/hosts'"]
-  - [sh, -c, "sudo bash -c 'echo \"nameserver 8.8.8.8\" > /etc/resolv.conf'"]
-  - [sh, -c, "sudo bash -c 'echo \"nameserver 8.8.4.4\" >> /etc/resolv.conf'"]
-  - [sh, -c, "sudo apt update"]
-  - [sh, -c, "sudo apt install python3-pip python3-venv git"]
-  - [sh, -c, "pip3 install flask gunicorn"]
-  - [sh, -c, "git clone https://github.com/aL0NEW0LF/openstack-saas-dummy-demo.git /home/ubuntu/calculator-saas"]
-  - [sh, -c, "chown ubuntu:ubuntu /home/ubuntu/calculator-saas"]
-  - [sh, -c, "systemctl daemon-reload"]
-  - [sh, -c, "systemctl start calculator"]
-  - [sh, -c, "systemctl enable calculator"]
+  - sudo bash -c 'echo "127.0.0.1 calculator" >> /etc/hosts'
+  - sudo bash -c 'echo "nameserver 8.8.8.8" > /etc/resolv.conf'
+  - sudo bash -c 'echo "nameserver 8.8.4.4" >> /etc/resolv.conf'
+  - sudo apt update
+  - sudo apt upgrade
+  - sudo apt install python3-pip python3-venv
+  - pip3 install flask gunicorn
+  - git clone https://github.com/aL0NEW0LF/openstack-saas-dummy-demo.git /home/ubuntu/calculator-saas
+  - chown ubuntu:ubuntu /home/ubuntu/calculator-saas
+  - systemctl daemon-reload
+  - systemctl start calculator
+  - systemctl enable calculator
 
 final_message: "The calculator service is now up and running!"
