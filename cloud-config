@@ -24,6 +24,7 @@ write_files:
 
 runcmd:
   - sudo bash -c 'echo "127.0.0.1 calculator" >> /etc/hosts'
+  - sudo hostname calculator
   - sudo bash -c 'echo "nameserver 8.8.8.8" > /etc/resolv.conf'
   - sudo bash -c 'echo "nameserver 8.8.4.4" >> /etc/resolv.conf'
   - sudo apt-get update -y
