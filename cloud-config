@@ -15,7 +15,7 @@ write_files:
       [Service]
       User=ubuntu
       WorkingDirectory=/home/ubuntu/calculator-saas
-      ExecStart=/home/ubuntu/saas/venv/bin/python3 /home/ubuntu/calculator-saas/server.py
+      ExecStart=venv/bin/python3 server.py
       Restart=always
   
       [Install]
@@ -35,7 +35,7 @@ runcmd:
   - git clone https://github.com/aL0NEW0LF/openstack-saas-dummy-demo.git /home/ubuntu/calculator-saas
   - chown ubuntu:ubuntu /home/ubuntu/calculator-saas
   - python3 -m venv /home/ubuntu/calculator-saas/venv
-  - /home/ubuntu/saas/venv/bin/pip3 install flask gunicorn
+  - /home/ubuntu/calculator-saas/venv/bin/pip3 install flask gunicorn
   - systemctl daemon-reload
   - systemctl start calculator
   - systemctl enable calculator
