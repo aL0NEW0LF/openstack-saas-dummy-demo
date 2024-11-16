@@ -27,8 +27,10 @@ runcmd:
   - sudo hostname calculator
   - sudo bash -c 'echo "nameserver 8.8.8.8" > /etc/resolv.conf'
   - sudo bash -c 'echo "nameserver 8.8.4.4" >> /etc/resolv.conf'
+  - sudo bash -c 'echo "DNS=8.8.8.8" >> /etc/systemd/resolved.conf'
+  - sudo bash -c 'echo "FallbackDNS=8.8.4.4" >> /etc/systemd/resolved.conf'
+  - sudo systemctl restart systemd-resolved.service
   - sudo apt-get update -y
-  - sudo apt-get upgrade -y
   - sudo apt-get install -y python3-pip python3-venv
   - pip3 install flask gunicorn
   - git clone https://github.com/aL0NEW0LF/openstack-saas-dummy-demo.git /home/ubuntu/calculator-saas
